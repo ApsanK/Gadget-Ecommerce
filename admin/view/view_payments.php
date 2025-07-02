@@ -32,7 +32,7 @@ include_once '../config.php';
                             <td><?= format_currency((float)$payment['amount']); ?></td>
                             <td><?= date('M d, Y', strtotime($payment['payment_date'])); ?></td>
                             <td class="action-buttons">
-                                <a href="delete_payment.php?id=<?= $payment['payment_id']; ?>&csrf_token=<?= htmlspecialchars($_SESSION['csrf_token']); ?>" class="view-payment-delete" onclick="return confirm('Are you sure?');"><i class="fas fa-trash-alt"></i></a>
+                                <a href="delete_payment.php?id=<?= $payment['payment_id']; ?>" class="view-payment-delete" onclick="return confirm('Are you sure?');"><i class="fas fa-trash-alt"></i></a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
