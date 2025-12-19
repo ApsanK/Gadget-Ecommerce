@@ -7,10 +7,7 @@ $dbname = 'ecommerce';
 $username = 'root';
 $password = '';
 
-// Enable error reporting for development
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
@@ -29,7 +26,7 @@ function format_currency($amount) {
 // Define base URL
 define('BASE_URL', '/ecommerce/');
 
-define('KHALTI_PUBLIC_KEY', '1f4bda5a8d6049e08de0dc2315e4d164'); 
-define('KHALTI_SECRET_KEY', 'fc513f598be14bddaa7f3974124e97af');
-define('KHALTI_ENV', 'https://dev.khalti.com/api/v2/'); 
+define('KHALTI_PUBLIC_KEY', 'YOUR_PUBLIC_KEY'); 
+define('KHALTI_SECRET_KEY', 'YOUR_SECRET_KEY');
+define('KHALTI_ENV', 'YOUR_KHALTI_ENVIRONMENT'); 
 ?>
