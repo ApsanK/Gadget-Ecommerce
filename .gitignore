@@ -1,0 +1,9 @@
+# Ignore environment variable files
+.env
+
+# Payment / sensitive configs
+config/db.php
+config/payment.php
+
+# Session files
+sessions/

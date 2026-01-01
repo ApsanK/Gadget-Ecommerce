@@ -4,7 +4,7 @@ session_start();
 
 require_once '../config.php';
 
-// Check if admin is logged in
+Check if admin is logged in
 if (!isset($_SESSION['admin_logged_in'])) {
     header("Location: " . BASE_URL . "admin/admin_login.php");
     exit;

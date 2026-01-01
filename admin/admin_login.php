@@ -1,10 +1,7 @@
 <?php
-// Start session
 session_start();
-
 require_once "../config.php";
 
-// Redirect if already logged in
 if (isset($_SESSION['admin_logged_in'])) {
     header("Location: " . BASE_URL . "admin/admin.php");
     exit;
@@ -13,24 +10,35 @@ if (isset($_SESSION['admin_logged_in'])) {
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = $_POST['email'] ?? '';
+
+    // Sanitize & validate input
+    $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
 
-    if (empty($email) || empty($password)) {
+    if ($email === '' || $password === '') {
         $error = "Email and password are required.";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = "Invalid email address.";
     } else {
         try {
-            $stmt = $pdo->prepare("SELECT id, full_name, password FROM admins WHERE email = ? AND is_active = 1");
+            $stmt = $pdo->prepare(
+                "SELECT id, full_name, password 
+                 FROM admins 
+                 WHERE email = ? AND is_active = 1 
+                 LIMIT 1"
+            );
             $stmt->execute([$email]);
             $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($admin && password_verify($password, $admin['password'])) {
+
                 $_SESSION['admin_logged_in'] = true;
                 $_SESSION['admin_id'] = $admin['id'];
                 $_SESSION['admin_username'] = $admin['full_name'];
 
-                // Update last_login
-                $updateStmt = $pdo->prepare("UPDATE admins SET last_login = NOW() WHERE id = ?");
+                $updateStmt = $pdo->prepare(
+                    "UPDATE admins SET last_login = NOW() WHERE id = ?"
+                );
                 $updateStmt->execute([$admin['id']]);
 
                 header("Location: " . BASE_URL . "admin/admin.php");
@@ -38,12 +46,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $error = "Invalid email or password.";
             }
+
         } catch (PDOException $e) {
-            $error = "Error: Unable to process login.";
+            $error = "Unable to process login.";
         }
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
